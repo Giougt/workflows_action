@@ -1,0 +1,32 @@
+name: Daily Commit with UTC Date
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Tous les jours à 12h UTC
+  workflow_dispatch:       # Permet aussi un déclenchement manuel
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set UTC datetime
+        id: datetime
+        run: echo "DATE_UTC=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
+
+      - name: Update file with current UTC time
+        run: |
+          echo "$DATE_UTC" >> last_update.txt
+
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_update.txt
+          git commit -m "Auto update: $DATE_UTC" || echo "No changes to commit"
+          git push
