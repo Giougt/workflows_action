@@ -1,9 +1,12 @@
 name: Daily Commit with UTC Date
 
+permissions:
+  contents: write   
+  
 on:
   schedule:
-    - cron: '0 12 * * *'  # Tous les jours à 12h UTC
-  workflow_dispatch:       # Permet aussi un déclenchement manuel
+    - cron: '0 12 * * *'  
+  workflow_dispatch:       
 
 jobs:
   update-file:
