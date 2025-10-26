@@ -11,7 +11,7 @@ on:
 jobs:
   update-file:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' && (github.event.schedule != '' && (fromJSON('{"limit_date":"2026-07-01"}').limit_date >= github.run_started_at)) }}
+    
     
     steps:
       - name: Checkout repository
